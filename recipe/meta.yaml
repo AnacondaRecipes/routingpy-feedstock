@@ -1,8 +1,5 @@
 {% set name = "routingpy" %}
 {% set version = "1.3.0" %}
-# commit for 1.3.0 tag
-{% set commit = "dc504af4a2445e9db836d3af9781ccc76c3856f2" %}
-
 
 package:
   name: {{ name|lower }}
@@ -10,10 +7,10 @@ package:
 
 source:
   # Starting from v0.3.3 the source code isn't available on PyPI anymore (only wheels)
-  # To make sure that gir repo is available we should use the git_url and git_tag
-  # because without them setuptools_scm won't find git tag and a version will be 'None'.
+  # To make sure that the git repo is available we should use the git_url and git_tag
+  # because without them setuptools_scm won't find the git tag and a version will be 'None'.
   git_url: https://github.com/gis-ops/{{ name }}.git
-  git_tag: 53dfbeb65f52ec347a8bf68af9f525bb0f7a5334
+  git_tag: {{ version }}
 
 build:
   number: 0
