@@ -30,7 +30,7 @@ requirements:
     - requests >=2.20.0,<3.0.0
   run_constrained:
     - matplotlib-base >=3.4.1,<4
-    - contextily >=1.1.0,<1.2.0
+    - contextily >=1.1.0,<2.0.0
     - geopandas >=0.8.2,<1
     - descartes >=1.0.0,<2
     - shapely >=2.0.0,<3
