@@ -1,5 +1,7 @@
 {% set name = "routingpy" %}
-{% set version = "0.3.3" %}
+{% set version = "1.3.0" %}
+# commit for 1.3.0 tag
+{% set commit = "dc504af4a2445e9db836d3af9781ccc76c3856f2" %}
 
 
 package:
@@ -7,41 +9,57 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/routingpy-{{ version }}.tar.gz
-  sha256: 297425fccf8911aa19e73ae245c5cb6464f4674eeceb9f699891bcb5f9d1d089
+  # Starting from v0.3.3 the source code isn't available on PyPI anymore (only wheels)
+  # To make sure that gir repo is available we should use the git_url and git_tag
+  # because without them setuptools_scm won't find git tag and a version will be 'None'.
+  git_url: https://github.com/gis-ops/{{ name }}.git
+  git_tag: 53dfbeb65f52ec347a8bf68af9f525bb0f7a5334
 
 build:
   number: 0
-  noarch: python
-  script: {{ PYTHON }} -m pip install . -vv
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
 
 requirements:
+  build:
+    - git  # [not win]
   host:
     - pip
-    - python >=3.6
-    - poetry >=0.12
+    - python
+    - setuptools
+    - setuptools_scm
+    - wheel
   run:
-    - python >=3.6
-    - requests >=2.0.0,<3.0.0
+    - python
+    - requests >=2.20.0,<3.0.0
   run_constrained:
-    - pandas >=1.1.0,<2
-    - folium >=0.11.0,<1
-    - shapely >=1.7.0,<2
-    - ipykernel >=5.3.4,<6
+    - matplotlib-base >=3.4.1,<4
+    - contextily >=1.1.0,<1.2.0
+    - geopandas = >=0.8.2,<1
+    - descartes >=1.0.0,<2
+    - shapely >=2.0.0,<3
+    - ipykernel >=6.0.0,<7
 
 test:
   imports:
     - routingpy
     - routingpy.routers
-  commands:
-    - pip check
+    - routingpy.client_base
   requires:
     - pip
+  commands:
+    - pip check
 
 about:
-  home: https://pypi.org/project/routingpy/
+  home: https://github.com/gis-ops/routingpy
+  dev_url: https://github.com/gis-ops/routingpy
+  doc_url: https://routingpy.readthedocs.io/
   summary: Python library to access all public routing, isochrones and matrix APIs in a consistent manner.
+  description: |
+    routingpy is a Python 3 client for a lot of popular web routing services.
+    Using routingpy you can easily request directions, isochrones and matrices 
+    from many reliable online providers in a consistent fashion.
   license: Apache-2.0
+  license_family: Apache
   license_file: LICENSE
 
 extra:
